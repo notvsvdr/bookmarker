@@ -1,45 +1,94 @@
 'use strict';
 
+var data = (localStorage.getItem('bookmarks')) ? JSON.parse(localStorage.getItem('bookmarks')) : [];
 
-function removeItem(e) {
-    var item_to_remove = this.parentNode.parentNode;
+renderBookmarks();
 
-    item_to_remove.remove();
+function renderBookmarks() {
+    for(var i = 0; i < data.length; i++) {
+        addBookmarkToDOM(data[i].name, data[i].url);
+    }
 }
 
-function addBookmark(name_value, url_value) {
+function dataUpdate() {
+    localStorage.setItem('bookmarks', JSON.stringify(data));
+}
 
-    var list = document.getElementById('bookmarks');
+function addBookmark(n, u) {
+    addBookmarkToDOM(n, u);
+
+    data.push( {name: n, url: u} );
+    dataUpdate();
+
+    document.getElementById('website_name').value = '';
+    document.getElementById('website_url').value = '';
+}
+
+function removeBookmark() {
+    var bookmarkToDelete = this.parentNode.parentNode;
+    var bookmarkToDeleteUrl = this.previousSibling.firstChild.href.slice(0, this.previousSibling.firstChild.href.length - 1);
+    console.log(bookmarkToDeleteUrl);
+    console.log(data[0].url);
+
+    for(var i = 0; i < data.length; i++) {
+        if (data[i].url === bookmarkToDeleteUrl) {
+            data.splice(i, 1);
+        }
+    }
+
+    dataUpdate();
+
+    bookmarkToDelete.remove();
+}
+
+function addBookmarkToDOM(n, u) {
+    var bookmarks = document.getElementById('bookmarks');
 
     var item = document.createElement('li');
-    item.innerText = name_value;
+    item.classList.add('list-group-item');
+    item.innerHTML = "<div class='easy'>" + n + "</div>";
 
     var buttons = document.createElement('div');
     buttons.classList.add('buttons');
 
-    var go = document.createElement('button');
-    go.innerHTML = "<a target='_blank' href='" + url_value + "'>" + "Go</a>";
-
     var remove = document.createElement('button');
-    remove.innerText = 'Remove';
-    remove.addEventListener('click', removeItem);
+    remove.classList.add('btn');
+    remove.innerText = "Remove";
+    remove.addEventListener('click', removeBookmark);
 
-    buttons.appendChild(remove);
+    var go = document.createElement('button');
+    go.classList.add('btn');
+    go.innerHTML = "<a target='_blank' href='" + u + "'>Go</a>";
+
     buttons.appendChild(go);
+    buttons.appendChild(remove);
     item.appendChild(buttons);
-    list.appendChild(item);
-
+    bookmarks.appendChild(item);
 }
 
-document.getElementById('add_bookmark').addEventListener('click', function(){
-    var name_value = document.getElementById('website_name').value;
-    var url_value = document.getElementById('website_url').value;
+// function validateUrl(str) {
+//     var pattern = new RegExp('^(https?:\/\/)?'+
+//         '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+
+//         '((\d{1,3}\.){3}\d{1,3}))'+
+//         '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+
+//         '(\?[;&a-z\d%_.~+=-]*)?'+
+//         '(\#[-a-z\d_]*)?$','i');
+//     if(!pattern.test(str)) {
+//         return false;
+//     } else {
+//         return true;
+//     }
+// }
 
-   if(name_value && url_value) {
-       addBookmark(name_value, url_value);
-       document.getElementById('website_name').value = '';
-       document.getElementById('website_url').value = '';
-   } else {
-       console.log('There is no text!!');
-   }
+document.getElementById('add_bookmark').addEventListener('click', function(){
+    var name = document.getElementById('website_name').value;
+    var url = document.getElementById('website_url').value;
+
+    //console.log(validateUrl(url));
+
+    if(name && url) {
+        addBookmark(name, url);
+    } else {
+        alert('There is no data or it is incorrect!');
+    }
 });

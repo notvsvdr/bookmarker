@@ -7,26 +7,42 @@
 
     <!--Reset CSS-->
     <link rel="stylesheet" href="resources/css/reset.min.css">
-    <!--Bootstrap core CSS-->
 
+    <!--Bootstrap core CSS-->
+    <link rel="stylesheet" href="resources/css/bootstrap.min.css">
 
     <!--Custom styles-->
     <link rel="stylesheet" href="resources/css/style.css">
 </head>
 <body>
-    <header>
-        <input type="text" placeholder="Enter name..." id="website_name">
-        <input type="text" placeholder="Enter URL..." id="website_url">
-        <button id="add_bookmark">Submit</button>
-    </header>
-
-    <ul id="bookmarks">
-
-    </ul>
 
 
+    <form class="container">
+        <div class="form-group">
+            <label>Name:</label>
+            <input class="form-control" type="text" placeholder="Enter name..." id="website_name">
+        </div>
+        <div class="form-group">
+            <label>URL:</label>
+            <input class="form-control" type="text" placeholder="Enter URL..." id="website_url">
+        </div>
+        <button class="btn btn-default" id="add_bookmark">Add</button>
+    </form>
+
+    <br/>
+
+    <div class="container">
+        <ul class="list-group" id="bookmarks">
+
+        </ul>
+    </div>
+
+
+    <!--JQuery-->
+    <script src="resources/js/jquery-3.2.1.min.js"></script>
 
     <!--Bootstrap core javascript-->
+    <script src="resources/js/bootstrap.min.js"></script>
 
     <!--JS-->
     <script src="resources/js/main.js"></script>
