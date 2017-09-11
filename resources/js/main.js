@@ -66,27 +66,21 @@ function addBookmarkToDOM(n, u) {
     bookmarks.appendChild(item);
 }
 
-// function validateUrl(str) {
-//     var pattern = new RegExp('^(https?:\/\/)?'+
-//         '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+
-//         '((\d{1,3}\.){3}\d{1,3}))'+
-//         '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+
-//         '(\?[;&a-z\d%_.~+=-]*)?'+
-//         '(\#[-a-z\d_]*)?$','i');
-//     if(!pattern.test(str)) {
-//         return false;
-//     } else {
-//         return true;
-//     }
-// }
+function isUrlValid(input) {
+    var res = input.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    if(res == null) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 document.getElementById('add_bookmark').addEventListener('click', function(){
     var name = document.getElementById('website_name').value;
     var url = document.getElementById('website_url').value;
 
-    //console.log(validateUrl(url));
 
-    if(name && url) {
+    if(name && url && isUrlValid(url)) {
         addBookmark(name, url);
     } else {
         alert('There is no data or it is incorrect!');
